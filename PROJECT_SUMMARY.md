@@ -311,22 +311,6 @@ This project demonstrates proficiency in:
 
 ---
 
-## Submission Checklist
-
-For your assignment submission:
-
-- [x] GitHub repository created
-- [ ] All code pushed to repository
-- [ ] Screenshot: Database diagram showing tables
-- [ ] Screenshot: Row count verification (50+)
-- [ ] Screenshot: Application execution
-- [ ] Screenshot: Data retrieval demonstration
-- [ ] Overview document (AI prompts, changes, analysis)
-- [ ] GitHub repository URL
-- [ ] Submit to Blackboard
-
----
-
 ## Important Notes for Graduate Students
 
 Remember to create your **overview document** that includes:
