@@ -2,10 +2,15 @@
 Database Configuration Module
 Handles MySQL database connection settings and connection pooling
 """
-
+from dotenv import load_dotenv
 import mysql.connector
 from mysql.connector import Error, pooling
 from typing import Optional
+import os 
+
+load_dotenv()
+
+SQLPASS = os.getenv("SQLPASS")
 
 class DatabaseConfig:
     """Database configuration and connection management"""
@@ -14,7 +19,7 @@ class DatabaseConfig:
     DB_CONFIG = {
         'host': 'localhost',
         'user': 'root',  # Change this to your MySQL username
-        'password': '',  # Change this to your MySQL password
+        'password': SQLPASS,
         'database': 'budget_tracker',
         'port': 3306
     }

@@ -16,7 +16,7 @@ CREATE TABLE users (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     CONSTRAINT chk_email_format CHECK (email LIKE '%_@__%.__%')
-);
+) ENGINE=InnoDB;
 
 -- Table 2: Categories
 -- Defines spending categories (food, entertainment, etc.)
@@ -26,7 +26,7 @@ CREATE TABLE categories (
     description TEXT,
     icon VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+) ENGINE=InnoDB;
 
 -- Table 3: Budgets
 -- Stores different budget configurations for users
@@ -35,16 +35,25 @@ CREATE TABLE budgets (
     user_id INT NOT NULL,
     budget_name VARCHAR(100) NOT NULL,
     budget_type ENUM('strict', 'moderate', 'custom') NOT NULL,
-    total_amount DECIMAL(10, 2) NOT NULL,
+    total_amount DECIMAL(10,2) NOT NULL,
     start_date DATE NOT NULL,
     end_date DATE NOT NULL,
-    is_active BOOLEAN DEFAULT TRUE,
+    is_active TINYINT(1) DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_budget_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
+    
     CONSTRAINT chk_budget_amount CHECK (total_amount > 0),
-    CONSTRAINT chk_budget_dates CHECK (end_date >= start_date)
-);
+    CONSTRAINT chk_budget_dates CHECK (end_date >= start_date),
+    
+    INDEX idx_budget_user (user_id),
+    INDEX idx_budget_active (is_active),
+    
+    CONSTRAINT fk_budget_user 
+        FOREIGN KEY (user_id) 
+        REFERENCES users(user_id) 
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
 -- Table 4: Budget Rules
 -- Defines spending limits for each category within a budget
@@ -55,12 +64,25 @@ CREATE TABLE budget_rules (
     limit_amount DECIMAL(10, 2) NOT NULL,
     alert_threshold DECIMAL(5, 2) DEFAULT 80.00,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT fk_rule_budget FOREIGN KEY (budget_id) REFERENCES budgets(budget_id) ON DELETE CASCADE,
-    CONSTRAINT fk_rule_category FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE CASCADE,
+    
     CONSTRAINT chk_limit_amount CHECK (limit_amount > 0),
     CONSTRAINT chk_alert_threshold CHECK (alert_threshold BETWEEN 0 AND 100),
-    CONSTRAINT unique_budget_category UNIQUE (budget_id, category_id)
-);
+    CONSTRAINT unique_budget_category UNIQUE (budget_id, category_id),
+    
+    INDEX idx_budget_rule_budget (budget_id),
+    INDEX idx_budget_rule_category (category_id),
+    
+    CONSTRAINT fk_rule_budget 
+        FOREIGN KEY (budget_id) 
+        REFERENCES budgets(budget_id) 
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_rule_category 
+        FOREIGN KEY (category_id) 
+        REFERENCES categories(category_id) 
+        ON DELETE CASCADE
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
 -- Table 5: Transactions
 -- Records individual spending entries
@@ -74,19 +96,27 @@ CREATE TABLE transactions (
     payment_method VARCHAR(50),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    CONSTRAINT fk_transaction_user FOREIGN KEY (user_id) REFERENCES users(user_id) ON DELETE CASCADE,
-    CONSTRAINT fk_transaction_category FOREIGN KEY (category_id) REFERENCES categories(category_id) ON DELETE RESTRICT,
-    CONSTRAINT chk_transaction_amount CHECK (amount > 0)
-);
+    
+    CONSTRAINT chk_transaction_amount CHECK (amount > 0),
+    
+    INDEX idx_transaction_user (user_id),
+    INDEX idx_transaction_date (transaction_date),
+    INDEX idx_transaction_category (category_id),
+    
+    CONSTRAINT fk_transaction_user 
+        FOREIGN KEY (user_id) 
+        REFERENCES users(user_id) 
+        ON DELETE CASCADE
+        ON UPDATE CASCADE,
+    CONSTRAINT fk_transaction_category 
+        FOREIGN KEY (category_id) 
+        REFERENCES categories(category_id) 
+        ON DELETE RESTRICT
+        ON UPDATE CASCADE
+) ENGINE=InnoDB;
 
--- Create indexes for better query performance
+-- Additional index on user email
 CREATE INDEX idx_user_email ON users(email);
-CREATE INDEX idx_budget_user ON budgets(user_id);
-CREATE INDEX idx_budget_active ON budgets(is_active);
-CREATE INDEX idx_transaction_user ON transactions(user_id);
-CREATE INDEX idx_transaction_date ON transactions(transaction_date);
-CREATE INDEX idx_transaction_category ON transactions(category_id);
-CREATE INDEX idx_budget_rule_budget ON budget_rules(budget_id);
 
 -- Create views for common queries
 CREATE VIEW active_budgets AS
@@ -116,3 +146,23 @@ FROM transactions t
 JOIN users u ON t.user_id = u.user_id
 JOIN categories c ON t.category_id = c.category_id
 ORDER BY t.transaction_date DESC;
+
+-- Verify foreign keys were created
+SELECT 
+    'Foreign Keys Verification' AS info,
+    COUNT(*) as total_foreign_keys
+FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE TABLE_SCHEMA = 'budget_tracker'
+AND REFERENCED_TABLE_NAME IS NOT NULL;
+
+-- Show all foreign keys
+SELECT 
+    TABLE_NAME,
+    COLUMN_NAME,
+    CONSTRAINT_NAME,
+    REFERENCED_TABLE_NAME,
+    REFERENCED_COLUMN_NAME
+FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE TABLE_SCHEMA = 'budget_tracker'
+AND REFERENCED_TABLE_NAME IS NOT NULL
+ORDER BY TABLE_NAME;
