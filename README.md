@@ -183,23 +183,6 @@ The database is populated with:
 - 60+ transactions
 
 **Total: 137+ rows across all tables**
-
-## Technologies Used
-
-- **Database**: MySQL 8.0
-- **Language**: Python 3.8+
-- **Database Driver**: mysql-connector-python
-- **Architecture**: Data Access Layer pattern
-
-## Graduate Requirements Met
-
-✓ Minimum 5 tables (5 implemented)
-✓ At least 3 foreign key relationships (4 implemented)
-✓ Proper constraints and validation
-✓ Complete CRUD operations for all models
-✓ Professional-grade code structure
-✓ Comprehensive test data (137+ rows)
-
 ## Future Enhancements
 
 Potential features for future iterations:
@@ -215,6 +198,6 @@ Potential features for future iterations:
 
 This project was created as part of CSCE 548 coursework.
 
-## Author
+## Author - Julius Parker
 
 Created for CSCE 548 - Full Stack Development
