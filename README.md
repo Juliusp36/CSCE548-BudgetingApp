@@ -2,6 +2,9 @@
 
 A comprehensive budget tracking system with a MySQL database backend and Python data access layer.
 
+## Run Command
+python3/python main.py
+
 ## Project Overview
 
 This application allows users to:
