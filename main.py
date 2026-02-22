@@ -9,7 +9,11 @@ from decimal import Decimal
 from typing import Optional
 
 from db_config import DatabaseConfig
-from models import User, Category, Budget, BudgetRule, Transaction
+from models.user import User
+from models.category import Category
+from models.budget import Budget
+from models.budget_rule import BudgetRule
+from models.transaction import Transaction
 
 
 class BudgetTrackerApp:
