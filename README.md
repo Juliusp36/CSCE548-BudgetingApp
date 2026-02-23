@@ -10,7 +10,7 @@ This application allows users to:
 - Set spending limits per category
 - View spending summaries and analytics
 - Manage transactions with detailed records
-# Service Layer
+# Business/Service Layer
 
 **Database:** Hosted on [railway.com](https://railway.com) 
 
@@ -48,6 +48,25 @@ python/python3 client_test.py                 #This is envokes the client tester
 ```python
 python3/python main.py             # gives you access to a frontend where you can execute various CRUD operations
 ```
+## File Locations
+
+```
+budget-tracker/
+├── schema.sql              # Database schema creation
+├── test_data.sql           # Test data insertion (50+ rows)
+├── db_config.py           # Database configuration
+├── main.py                # Console application
+├── requirements.txt       # Python dependencies
+├── README.md             # This file
+└── models/
+    ├── __init__.py       # Models package initialization
+    ├── user.py           # User model with CRUD operations
+    ├── category.py       # Category model with CRUD operations
+    ├── budget.py         # Budget model with CRUD operations
+    ├── budget_rule.py    # Budget Rule model with CRUD operations
+    └── transaction.py    # Transaction model with CRUD operations
+```
+
 ## Database Schema
 
 The application uses 5 tables with proper relationships:
@@ -90,25 +109,6 @@ The application uses 5 tables with proper relationships:
 
 - Python 3.8 or higher
 - MySQL Server 8.0 or higher (or compatible like MariaDB)
-
-## File Locations
-
-```
-budget-tracker/
-├── schema.sql              # Database schema creation
-├── test_data.sql           # Test data insertion (50+ rows)
-├── db_config.py           # Database configuration
-├── main.py                # Console application
-├── requirements.txt       # Python dependencies
-├── README.md             # This file
-└── models/
-    ├── __init__.py       # Models package initialization
-    ├── user.py           # User model with CRUD operations
-    ├── category.py       # Category model with CRUD operations
-    ├── budget.py         # Budget model with CRUD operations
-    ├── budget_rule.py    # Budget Rule model with CRUD operations
-    └── transaction.py    # Transaction model with CRUD operations
-```
 
 ## License
 
