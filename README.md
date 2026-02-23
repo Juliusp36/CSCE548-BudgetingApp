@@ -2,9 +2,6 @@
 
 A comprehensive budget tracking system with a MySQL database backend and Python data access layer.
 
-## Run Command
-python3/python main.py
-
 ## Project Overview
 
 This application allows users to:
@@ -14,6 +11,42 @@ This application allows users to:
 - View spending summaries and analytics
 - Manage transactions with detailed records
 
+## Other Information Pertinent to the Assignment (Also found on Github Readme)
+
+# Service Layer
+
+**Database:** Hosted on [railway.com](https://railway.com) 
+
+**API/Services:** Hosted on [render.com](https://render.com) 
+
+### Run command
+
+“python/python3  python3 client_test.py “ - This is envokes the client tester for the services 
+
+**NOTE: Because I am hosting with the free tiers of railway and render, it will take some time (around 30-60 additional seconds) for the test script to run. Render specifically will spin down you’re instance when idle on the free tier.** 
+
+### File Locations
+
+**Business layer:** Defines all of the rules for each table within the database
+**/**business/ 
+
+budget_manager.py
+
+budget_rule_manager.py
+
+category_manager.py
+
+transaction__manager.py
+
+user_manager.py
+
+**Service layer (within the root directory):** Adds services/APIs for the data
+
+/app.py
+
+# Data Access Layer 
+## Run Command
+python3/python main.py
 ## Database Schema
 
 The application uses 5 tables with proper relationships:
@@ -59,65 +92,7 @@ The application uses 5 tables with proper relationships:
 - Python 3.8 or higher
 - MySQL Server 8.0 or higher (or compatible like MariaDB)
 
-### Setup Instructions
-
-1. **Clone the repository**
-   ```bash
-   git clone <your-repo-url>
-   cd budget-tracker
-   ```
-
-2. **Install Python dependencies**
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-3. **Configure database connection**
-   
-   Edit `db_config.py` and update the database credentials:
-   ```python
-   DB_CONFIG = {
-       'host': 'localhost',
-       'user': 'your_mysql_username',
-       'password': 'your_mysql_password',
-       'database': 'budget_tracker',
-       'port': 3306
-   }
-   ```
-
-4. **Create the database**
-   ```bash
-   mysql -u root -p < schema.sql
-   ```
-
-5. **Load test data**
-   ```bash
-   mysql -u root -p < test_data.sql
-   ```
-
-## Running the Application
-
-Start the console application:
-```bash
-python main.py
-```
-
-## Features
-
-### Menu Options
-
-1. **View All Users** - Display all registered users
-2. **View All Categories** - Show spending categories with transaction counts
-3. **View All Budgets** - List all budgets with details
-4. **View All Transactions** - Display recent transactions (last 50)
-5. **View Budget Details** - Detailed information about a specific budget
-6. **View User Transactions** - All transactions for a specific user
-7. **View Spending Summary** - Spending breakdown by category for a date range
-8. **View Budget Rules with Spending** - Budget limits vs actual spending
-9. **Create New Transaction** - Add a new spending entry
-10. **Database Statistics** - Overview of database contents
-
-## Project Structure
+## File Locations
 
 ```
 budget-tracker/
@@ -135,67 +110,6 @@ budget-tracker/
     ├── budget_rule.py    # Budget Rule model with CRUD operations
     └── transaction.py    # Transaction model with CRUD operations
 ```
-
-## Data Access Layer
-
-All models include complete CRUD operations:
-
-- **Create**: Insert new records
-- **Read**: Retrieve by ID, get all, custom queries
-- **Update**: Modify existing records
-- **Delete**: Remove records
-
-### Example Usage
-
-```python
-from models import User, Transaction
-
-# Create a new user
-user_id = User.create("john_doe", "john@email.com", "hashed_password")
-
-# Get user by ID
-user = User.get_by_id(user_id)
-
-# Update user
-User.update(user_id, email="newemail@email.com")
-
-# Create transaction
-Transaction.create(user_id, category_id=1, amount=45.67, 
-                  transaction_date="2024-02-15", 
-                  description="Grocery shopping")
-
-# Get user's transactions
-transactions = Transaction.get_by_user(user_id)
-```
-
-## Database Constraints
-
-- Email validation (CHECK constraint)
-- Positive amounts for budgets and transactions
-- Date validation (end_date >= start_date)
-- Alert thresholds between 0-100%
-- Unique budget-category combinations in budget rules
-
-## Test Data
-
-The database is populated with:
-- 10 users
-- 12 categories
-- 15 budgets
-- 40+ budget rules
-- 60+ transactions
-
-**Total: 137+ rows across all tables**
-## Future Enhancements
-
-Potential features for future iterations:
-- User authentication with password hashing
-- Budget analytics and visualizations
-- Recurring transaction support
-- Budget alerts and notifications
-- Export functionality (CSV, PDF)
-- Web-based frontend
-- Mobile application
 
 ## License
 
