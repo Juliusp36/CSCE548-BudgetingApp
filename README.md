@@ -10,6 +10,12 @@ This application allows users to:
 - Set spending limits per category
 - View spending summaries and analytics
 - Manage transactions with detailed records
+
+ # NOTE: do this before testing 
+ make sure you install of the requirements using: 
+```python
+pip/pip3 install -r requirments.txt
+```
 # Business/Service Layer
 
 **Database:** Hosted on [railway.com](https://railway.com) 
