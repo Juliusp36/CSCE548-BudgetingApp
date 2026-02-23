@@ -28,21 +28,20 @@ This application allows users to:
 ### File Locations
 
 **Business layer:** Defines all of the rules for each table within the database
-**/**business/ 
-
-budget_manager.py
-
-budget_rule_manager.py
-
-category_manager.py
-
-transaction__manager.py
-
-user_manager.py
+```
+├── business/                  # Business layer (business rules)
+│   ├── __init__.py
+│   ├── user_manager.py
+│   ├── category_manager.py
+│   ├── budget_manager.py
+│   ├── budget_rule_manager.py
+│   └── transaction_manager.py
+```
 
 **Service layer (within the root directory):** Adds services/APIs for the data
-
+```
 /app.py
+```
 
 # Data Access Layer 
 ## Run Command
