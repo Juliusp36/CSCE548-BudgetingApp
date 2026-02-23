@@ -19,8 +19,9 @@ This application allows users to:
 **More specifically, my API's are hosted here:** [csce548-budgetingapp.onrender.com/](https://csce548-budgetingapp.onrender.com/)
 
 ### Run command
-
-“python/python3  python3 client_test.py “ - This is envokes the client tester for the services 
+```
+“python/python3  python3 client_test.py “                   #This is envokes the client tester for the services which calls from the manager classes
+```
 
 **NOTE: Because I am hosting with the free tiers of railway and render, it will take some time (around 30-60 additional seconds) for the test script to run. Render specifically will spin down you’re instance when idle on the free tier.** 
 
@@ -44,7 +45,9 @@ This application allows users to:
 
 # Data Access Layer 
 ## Run Command
-python3/python main.py
+```python
+python3/python main.py             # gives you access to a frontend where you can execute various CRUD operations
+```
 ## Database Schema
 
 The application uses 5 tables with proper relationships:
@@ -82,8 +85,6 @@ The application uses 5 tables with proper relationships:
 - Categories → Budget Rules (One-to-Many, CASCADE delete)
 - Users → Transactions (One-to-Many, CASCADE delete)
 - Categories → Transactions (One-to-Many, RESTRICT delete)
-
-## Installation
 
 ### Prerequisites
 
