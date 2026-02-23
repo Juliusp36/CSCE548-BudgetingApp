@@ -10,14 +10,13 @@ This application allows users to:
 - Set spending limits per category
 - View spending summaries and analytics
 - Manage transactions with detailed records
-
-## Other Information Pertinent to the Assignment (Also found on Github Readme)
-
 # Service Layer
 
 **Database:** Hosted on [railway.com](https://railway.com) 
 
 **API/Services:** Hosted on [render.com](https://render.com) 
+
+**More specifically, my API's are hosted here:** [csce548-budgetingapp.onrender.com/](https://csce548-budgetingapp.onrender.com/)
 
 ### Run command
 
