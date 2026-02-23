@@ -23,7 +23,7 @@ This application allows users to:
 python/python3 client_test.py                 #This is envokes the client tester for the services which calls from the manager classes
 ```
 
-**NOTE: Because I am hosting with the free tiers of railway and render, it will take some time (around 30-60 additional seconds) for the test script to run. Render specifically will spin down you’re instance when idle on the free tier.** 
+**NOTE: Because I am hosting with the free tiers of railway and render, it will take some time (around 30-60 additional seconds) for the test script to run. Render specifically will spin down you’re instance when idle on the free tier. The process of completing all of the tests is fairly long without the additional loading time.** 
 
 ### File Locations
 
