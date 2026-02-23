@@ -11,11 +11,10 @@ import requests
 import json
 from datetime import datetime, timedelta
 
-# Base URL for the API
-BASE_URL = "http://localhost:5001/api"
+# Base URL for the API for testing
+# BASE_URL = "http://localhost:5001/api"
 
-# For testing on Render.com, change to:
-# BASE_URL = "https://your-app-name.onrender.com/api"
+BASE_URL = "https://csce548-budgetingapp.onrender.com/api"
 
 
 def print_section(title):
