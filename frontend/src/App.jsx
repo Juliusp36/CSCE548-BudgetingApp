@@ -8,11 +8,11 @@ import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-ro
 import './App.css';
 
 // Import all components
-import Users from './Users';
-import Categories from './Categories';
-import Budgets from './Budgets';
-import BudgetRules from './BudgetRules';
-import Transactions from './Transactions';
+import Users from './components/Users';
+import Categories from './components/Categories';
+import Budgets from './components/Budgets';
+import BudgetRules from './components/BudgetRules';
+import Transactions from './components/Transactions';
 
 function App() {
   return (
