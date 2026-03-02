@@ -17,7 +17,8 @@ This application allows users to:
 pip/pip3 install -r requirments.txt
 ```
 # Client Layer/Frontend
-**Frontend:** Hosted on [netlify]([https://benevolent-nasturtium-26b5e7.netlify.app/users](https://benevolent-nasturtium-26b5e7.netlify.app/users))
+**Frontend:** Hosted on [netlify](https://benevolent-nasturtium-26b5e7.netlify.app/users)
+
 **NOTE: It may take a while for things on the external site to load due to Render's cold start time**
 ### File Locations
 ```
