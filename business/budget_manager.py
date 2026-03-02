@@ -19,12 +19,23 @@ class BudgetManager:
     def _validate_dates(start_date: str, end_date: str) -> bool:
         """Validate that end date is after start date"""
         try:
-            start = datetime.strptime(start_date, '%Y-%m-%d').date()
-            end = datetime.strptime(end_date, '%Y-%m-%d').date()
+        # Handle both string and date objects
+            if isinstance(start_date, str):
+                start = datetime.strptime(start_date, '%Y-%m-%d').date()
+            else:
+                start = start_date
+            
+            if isinstance(end_date, str):
+                end = datetime.strptime(end_date, '%Y-%m-%d').date()
+            else:
+                end = end_date
+            
             return end >= start
-        except ValueError:
+        except(ValueError, TypeError) as e:
+            print(f"Date validation error: {e}")
             return False
-    
+        
+        
     @staticmethod
     def save(budget_id: int, user_id: int, budget_name: str, budget_type: str,
              total_amount: float, start_date: str, end_date: str, 
@@ -66,6 +77,10 @@ class BudgetManager:
                     "error": f"Budget type must be one of: {', '.join(valid_types)}"
                 }
             
+            try: 
+                total_amount = float(total_amount)
+            except (ValueError, TypeError):
+                 return {"success": False, "error": "Total amount must be a valid number"}
             # Validate total amount
             if total_amount <= 0:
                 return {"success": False, "error": "Total amount must be positive"}
@@ -94,8 +109,13 @@ class BudgetManager:
             
             # If ID is 0, this is a new record (INSERT)
             if budget_id == 0:
+    # Ensure dates are strings in correct format
+                start = start_date if isinstance(start_date, str) else start_date.strftime('%Y-%m-%d')
+                end = end_date if isinstance(end_date, str) else end_date.strftime('%Y-%m-%d')
+
                 new_id = Budget.create(user_id, budget_name, budget_type, 
-                                      total_amount, start_date, end_date, is_active)
+                          total_amount, start, end, is_active)
+                
                 return {
                     "success": True,
                     "budget_id": new_id,
@@ -109,9 +129,12 @@ class BudgetManager:
                 if not existing:
                     return {"success": False, "error": "Budget not found"}
                 
+                start = start_date if isinstance(start_date, str) else start_date.strftime('%Y-%m-%d')
+                end = end_date if isinstance(end_date, str) else end_date.strftime('%Y-%m-%d')
+                
                 Budget.update(budget_id, budget_name=budget_name, budget_type=budget_type,
-                            total_amount=total_amount, start_date=start_date, 
-                            end_date=end_date, is_active=is_active)
+                            total_amount=total_amount, start_date=start,  
+                            end_date=end, is_active=is_active)
                 return {
                     "success": True,
                     "budget_id": budget_id,

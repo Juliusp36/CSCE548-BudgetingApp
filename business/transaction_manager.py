@@ -53,6 +53,12 @@ class TransactionManager:
             Dict with success status, transaction_id, and any warnings
         """
         try:
+            transaction_id = int(transaction_id)
+            user_id = int(user_id)
+            category_id = int(category_id)
+            amount = float(amount)
+
+            
             # Verify user exists
             user = User.get_by_id(user_id)
             if not user:
@@ -140,7 +146,11 @@ class TransactionManager:
             txn_date = datetime.strptime(transaction_date, '%Y-%m-%d').date()
             budget_start = budget['start_date']
             budget_end = budget['end_date']
-            
+            if isinstance(budget_start, str):
+                budget_start = datetime.strptime(budget_start, '%Y-%m-%d').date()
+
+            if isinstance(budget_end, str):
+                budget_end = datetime.strptime(budget_end, '%Y-%m-%d').date()
             if not (budget_start <= txn_date <= budget_end):
                 warnings.append(f"Transaction date is outside active budget period ({budget_start} to {budget_end})")
                 return warnings

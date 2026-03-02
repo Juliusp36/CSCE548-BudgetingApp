@@ -38,6 +38,12 @@ class BudgetRuleManager:
             Dict with success status and rule_id or error message
         """
         try:
+            rule_id = int(rule_id)
+            budget_id = int(budget_id)
+            category_id = int(category_id)
+            limit_amount = float(limit_amount)
+            alert_threshold = float(alert_threshold)
+            
             # Verify budget exists
             budget = Budget.get_by_id(budget_id)
             if not budget:
@@ -57,10 +63,12 @@ class BudgetRuleManager:
                 return {"success": False, "error": "Alert threshold must be between 0 and 100"}
             
             # Business Rule: Limit shouldn't exceed budget total
-            if limit_amount > budget['total_amount']:
+            budget_total = float(budget['total_amount'])
+
+            if limit_amount > budget_total:
                 return {
                     "success": False,
-                    "error": f"Limit (${limit_amount:.2f}) exceeds budget total (${budget['total_amount']:.2f})"
+                   "error": f"Limit (${limit_amount:.2f}) exceeds budget total (${budget_total:.2f})"
                 }
             
             # Check for duplicate budget-category combination
@@ -94,6 +102,8 @@ class BudgetRuleManager:
                     "rule_id": rule_id,
                     "message": "Budget rule updated successfully"
                 }
+        except (ValueError, TypeError):
+            return {"success": False, "error": "Invalid numeric input"}
                 
         except Exception as e:
             return {"success": False, "error": f"Database error: {str(e)}"}
