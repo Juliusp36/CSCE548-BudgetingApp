@@ -45,7 +45,6 @@ pip/pip3 install -r requirments.txt
     │
     ├── package.json
     ├── .gitignore
-    └── README.md
 ```
 # Business/Service Layer
 
