@@ -820,7 +820,7 @@ Use this checklist to verify successful deployment:
 - **Frontend:** https://benevolent-nasturtium-26b5e7.netlify.app
 - **Backend:** https://csce548-budgetingapp.onrender.com
 - **Database:** Railway (private)
-- **Repository:** https://github.com/yourusername/CSCE548-BudgetingApp
+- **Repository:** https://github.com/Juliusp36/CSCE548-BudgetingApp
 
 ---
 
