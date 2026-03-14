@@ -19,6 +19,10 @@
 8. [Testing & Verification](#testing--verification)
 9. [AI-Generated Code Analysis](#ai-generated-code-analysis)
 10. [Troubleshooting](#troubleshooting)
+11. [Project Statistics](#project-statistics)
+12. [Depolyment URLS](#deploymenturls)
+13. [Credits](#credits)
+14. [License](#license)
 
 ---
 
