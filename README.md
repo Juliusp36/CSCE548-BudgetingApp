@@ -16,69 +16,6 @@ This application allows users to:
 ```python
 pip/pip3 install -r requirments.txt
 ```
-# Client Layer/Frontend
-**Frontend:** Hosted on [netlify.com](https://benevolent-nasturtium-26b5e7.netlify.app) 
-
-**NOTE: It may take a while for things on the external site to load due to Render's cold start time**
-### File Locations
-```
-├──frontend/                       
-    │
-    ├── public/
-    │   └── index.html
-    │
-    ├── src/
-    │   ├── components/
-    │   │   ├── Users.jsx
-    │   │   ├── Categories.jsx
-    │   │   ├── Budgets.jsx
-    │   │   ├── BudgetRules.jsx
-    │   │   └── Transactions.jsx
-    │   │
-    │   ├── services/
-    │   │   └── api.js
-    │   │
-    │   ├── App.jsx
-    │   ├── App.css
-    │   ├── index.js
-    │   └── index.css
-    │
-    ├── package.json
-    ├── .gitignore
-```
-# Business/Service Layer
-
-**Database:** Hosted on [railway.com](https://railway.com) 
-
-**API/Services:** Hosted on [render.com](https://render.com) 
-
-**More specifically, my API's are hosted here:** [csce548-budgetingapp.onrender.com/](https://csce548-budgetingapp.onrender.com/)
-
-### Run command
-```
-python/python3 client_test.py                 #This is envokes the client tester for the services which calls from the manager classes
-```
-
-**NOTE: Because I am hosting with the free tiers of railway and render, it will take some time (around 30-60 additional seconds) for the test script to run. Render specifically will spin down you’re instance when idle on the free tier. The process of completing all of the tests is fairly long without the additional loading time. When looking on the website during the coldstart/spin up period it may show that the API is not loading initially, but it will show after the cold start period** 
-
-### File Locations
-
-**Business layer:** Defines all of the rules for each table within the database
-```
-├── business/                  # Business layer (business rules)
-│   ├── __init__.py
-│   ├── user_manager.py
-│   ├── category_manager.py
-│   ├── budget_manager.py
-│   ├── budget_rule_manager.py
-│   └── transaction_manager.py
-```
-
-**Service layer (within the root directory):** Adds services/APIs for the data
-```
-/app.py
-```
-
 # Data Access Layer 
 ## Run Command
 ```python
@@ -145,7 +82,69 @@ The application uses 5 tables with proper relationships:
 
 - Python 3.8 or higher
 - MySQL Server 8.0 or higher (or compatible like MariaDB)
+# Business/Service Layer
 
+**Database:** Hosted on [railway.com](https://railway.com) 
+
+**API/Services:** Hosted on [render.com](https://render.com) 
+
+**More specifically, my API's are hosted here:** [csce548-budgetingapp.onrender.com/](https://csce548-budgetingapp.onrender.com/)
+
+### Run command
+```
+python/python3 client_test.py                 #This is envokes the client tester for the services which calls from the manager classes
+```
+
+**NOTE: Because I am hosting with the free tiers of railway and render, it will take some time (around 30-60 additional seconds) for the test script to run. Render specifically will spin down you’re instance when idle on the free tier. The process of completing all of the tests is fairly long without the additional loading time. When looking on the website during the coldstart/spin up period it may show that the API is not loading initially, but it will show after the cold start period** 
+
+### File Locations
+
+**Business layer:** Defines all of the rules for each table within the database
+```
+├── business/                  # Business layer (business rules)
+│   ├── __init__.py
+│   ├── user_manager.py
+│   ├── category_manager.py
+│   ├── budget_manager.py
+│   ├── budget_rule_manager.py
+│   └── transaction_manager.py
+```
+
+**Service layer (within the root directory):** Adds services/APIs for the data
+```
+/app.py
+```
+
+# Client Layer/Frontend
+**Frontend:** Hosted on [netlify.com](https://benevolent-nasturtium-26b5e7.netlify.app) 
+
+**NOTE: It may take a while for things on the external site to load due to Render's cold start time**
+### File Locations
+```
+├──frontend/                       
+    │
+    ├── public/
+    │   └── index.html
+    │
+    ├── src/
+    │   ├── components/
+    │   │   ├── Users.jsx
+    │   │   ├── Categories.jsx
+    │   │   ├── Budgets.jsx
+    │   │   ├── BudgetRules.jsx
+    │   │   └── Transactions.jsx
+    │   │
+    │   ├── services/
+    │   │   └── api.js
+    │   │
+    │   ├── App.jsx
+    │   ├── App.css
+    │   ├── index.js
+    │   └── index.css
+    │
+    ├── package.json
+    ├── .gitignore
+```
 ## License
 
 This project was created as part of CSCE 548 coursework.
