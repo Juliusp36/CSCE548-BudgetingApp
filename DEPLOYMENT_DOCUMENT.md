@@ -20,6 +20,7 @@
 9. [AI-Generated Code Analysis](#ai-generated-code-analysis)
 10. [Troubleshooting](#troubleshooting)
 11. [Project Statistics](#project-statistics)
+12. [Credits](#credits)
 
 ---
 
