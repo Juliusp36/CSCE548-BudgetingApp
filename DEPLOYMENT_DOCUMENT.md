@@ -33,11 +33,11 @@ Budget Tracker is a complete full-stack web application for personal budget mana
 
 ### Key Features
 
-✅ **Full CRUD Operations** for all 5 tables (Users, Categories, Budgets, Budget Rules, Transactions)  
-✅ **Business Rule Validation** (unique constraints, date validation, spending limits)  
-✅ **Subset Queries** (filter budgets by user, rules by budget, transactions by user)  
-✅ **Responsive Design** with purple (#A020F0) theme  
-✅ **Cloud Deployment** (Railway + Render + Netlify)  
++ **Full CRUD Operations** for all 5 tables (Users, Categories, Budgets, Budget Rules, Transactions)  
++ **Business Rule Validation** (unique constraints, date validation, spending limits)  
++ **Subset Queries** (filter budgets by user, rules by budget, transactions by user)  
++ **Responsive Design** with purple (#A020F0) theme  
++ **Cloud Deployment** (Railway + Render + Netlify)  
 
 ---
 
@@ -141,7 +141,7 @@ MYSQLPASSWORD = your_password_here
 MYSQLDATABASE = railway
 ```
 
-⚠️ **Important:** Note the PORT - it's NOT 3306!
+ **Important:** Note the PORT
 
 ### Step 3: Connect to Database
 
@@ -190,7 +190,7 @@ SELECT COUNT(*) FROM transactions;
 -- Should show 143 total rows across tables
 ```
 
-✅ **Database setup complete!**
+**Database setup complete!**
 
 ---
 
@@ -285,9 +285,9 @@ curl https://your-app.onrender.com/api/users
 # Should return JSON array of users
 ```
 
-✅ **Backend deployment complete!**
+**Backend deployment complete!**
 
-⚠️ **Note:** Render free tier spins down after inactivity. First request may take 30-60 seconds.
+**Note:** Render free tier spins down after inactivity. First request may take 30-60 seconds.
 
 ---
 
@@ -353,7 +353,7 @@ Publish directory:  frontend/build
    Value: https://your-backend.onrender.com/api
    ```
    
-   ⚠️ **Important:** Use YOUR Render backend URL + `/api`
+   **Important:** Use YOUR Render backend URL + `/api`
 
 ### Step 5: Deploy
 
@@ -379,7 +379,7 @@ Publish directory:  frontend/build
    - Budget Rules
    - Transactions
 
-✅ **Frontend deployment complete!**
+ **Frontend deployment complete!**
 
 ---
 
@@ -437,7 +437,7 @@ npm start
 - Frontend: http://localhost:3000
 - Both should be running simultaneously
 
-✅ **Local development setup complete!**
+**Local development setup complete!**
 
 ---
 
@@ -508,7 +508,7 @@ SELECT * FROM transactions WHERE user_id = 2 LIMIT 10;
 
 ### Expected Results
 
-✅ **All operations should:**
+ **All operations should:**
 - Display success message in UI
 - Update database immediately
 - Reflect changes in subsequent queries
@@ -529,144 +529,139 @@ SELECT * FROM transactions WHERE user_id = 2 LIMIT 10;
 
 #### **Project 1: Data Layer**
 
-**Initial Prompt:**
+### Initial Prompt(s)
+
+Initially, I used two promtps to generate the first version of my codel; the first one was to verify that it was possible to create my budgetting app, and the second one was to actually generate the code: 
+
+**First Prompt:** 
+
+**NOTE:** I attached a PDF version of the instructions to this message 
+**’The goal of this class is to eventually create a full stack application, today we will be starting on the data layer. First I want to brainstorm about how this may be done. My current idea is for my application to be a budgetting app however I am not sure if I can allow it to fufill the requirements. I am a graduate student so I must follow the additional outlined requirments for a graduate student. Because we are only making the date layer right now and this chat is theoretical meaning there will be no code yet I won't give too many specifics. The app should allow users to enter and track their spendings it should have several different budget models (moderate,strict) and the user may be able to create their own. is it possible to fufill the requirments and create this app. we will also be using python and mysql to create this.’**
+
+**Second Prompt:** 
+
+**‘Alright let's begin generating the data layer, we will leave the overview document for later’** 
+
+### Issues and Roadblocks After the Initial Prompt(s) (i.e. Issues I was forced to fix)
+
+  Because of Claudes effectiveness in coding, I found that really nothing went wrong with the project. All of the CRUD operations were there and there were 5 tables. However, the foreign key relationships were not showing up within the MySQL workbench ‘inspection’ tab. To fix this, I initially examined the schema of the database to see if there was anything wrong with and ran some queries to try and see if the foreign keys would show up; the foreign keys were showing up within the codebase, however, they were not showing up in mSQL workbench. I began trobuleshooting some more by uninstalling the application and refreshing the tables, until I concluded that it mya be a version mismatch between the MySQL installation I have on my computer and the MySQL workbench application. This theory was further enhanced by the EER document created by MySQL showing the foreign keys. 
+
+  I would not neccessarily call this an issue that I was forced to fix because it was not caused by the AI, it was due to a version mismatch. Because I can always query and view the foreign keys, and I’ve implemented code to verify the foreign keys (more on that later), it is not that detrimential to me, so I have decided to keep the installations as is.
+
+### Changes After the Inital Implementation
+
+  Most notably, I added code to validate the creation of the foreign key relationships. This was added as a result to the issue outlined above. There was also some minor changes to the configurations of the database, like the imports (because I prefer more granualr imports than having them on one line). Additionally, I added an enviornment variable to store the password for the root user within MySQL titled ‘SQLPASS’. Lastly, a change I made was adding a requirments document, just so the correct dependencies/frameworks can be installs in case I was working on another machine (though this is not reflected in the first push on github); this also allows me to keep track of all of the dependencies/frameworks I add. 
+
+  The code for the schema changes looks like this:
+
 ```
-Create a MySQL database schema for a budget tracking application with 5 tables: 
-users, categories, budgets, budget_rules, and transactions. Include foreign key 
-relationships, proper constraints, and sample test data. Then create a Python 
-Data Access Layer with full CRUD operations for each table using 
-mysql-connector-python.
+-- Verify foreign keys were created
+SELECT 
+    'Foreign Keys Verification' AS info,
+    COUNT(*) as total_foreign_keys
+FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE TABLE_SCHEMA = 'budget_tracker'
+AND REFERENCED_TABLE_NAME IS NOT NULL;
+
+-- Show all foreign keys
+SELECT 
+    TABLE_NAME,
+    COLUMN_NAME,
+    CONSTRAINT_NAME,
+    REFERENCED_TABLE_NAME,
+    REFERENCED_COLUMN_NAME
+FROM INFORMATION_SCHEMA.KEY_COLUMN_USAGE
+WHERE TABLE_SCHEMA = 'budget_tracker'
+AND REFERENCED_TABLE_NAME IS NOT NULL
+ORDER BY TABLE_NAME;
 ```
 
-**Follow-up Prompts:**
-- "Add connection pooling to the database configuration"
-- "Create 143 rows of realistic test data"
-- "Fix foreign key constraints to use InnoDB engine"
+### AI Effectiveness (i.e. What did it do Well?)
+
+  Overall, I would rate Claude - ver. Sonnet 4.5 **highly effective**. The initial code base it provided was very good. It had zero major errors; it implemented the code cleanly as the instructions required. The only error I really had was a installation version mismatch (outlined above), and that was an error on my end. The front-end, foreign keys, tables, CRUD, test data … were all implemented properly. 
+
+  **In short, the AI model used was highly effective, it did not miss anything, and there were no major errors I was forced to solve**
 
 #### **Project 2: Business & Service Layers**
 
-**Business Layer Prompt:**
-```
-Create a Python Business Layer that sits between the Data Access Layer and 
-Service Layer. Implement business rules including: unique constraints, date 
-validation, one active budget per user, spending limit warnings, and proper 
-error handling. Use a save() pattern where ID=0 means INSERT, ID>0 means UPDATE.
-```
+### Initial Prompt(s)
 
-**Service Layer Prompt:**
-```
-Create a Flask REST API service layer that exposes all business layer methods 
-as HTTP endpoints. Include CORS support, proper error handling, and health 
-check endpoints. Deploy to Render.com using Gunicorn.
-```
+Like last time, I initially used two promtps to generate the first version of my code; the first one was to verify that it was possible to create my budgetting app, and the second one was to actually generate the code. I found that this method was very effective last time, so I decided to use it again, however, I used more prompts to segment the project into parts: 
+
+**NOTE:** I attached a PDF version of the instructions to this prompt. It is also important to acknowledge that this is within the same chat that the initial business layer was in to maintain the continuity for my application: 
+
+**‘Now we are going to move into the second project, the bussiness layer.**
+
+**Before we begin coding, I want you to help me find a list of services and microservices that I could use and how I would host them. Attached are the instructions, remeber, I am a graduate student and would be following graduate requirements. I can send an explanation describing the bussiness and service layers to you if you need more info’**
+
+**Second Prompt:** 
+
+**NOTE:** I attached a pdf document containing condensed information about the business and service layers; to summarize, the document stated that the business layer was to be treated as a manager for the code and that the service layer would host these services on an API endpoint
+
+‘**This is the information pertinent to the bussiness and service layer. Let's take this 1 at a time. We will start with the code of the bussiness layer.’** 
+
+**Third and Final Prompt**
+
+**'Ok let's get started on the service layer and the deployment. What services do we currently have that we are hosting’**
+
+**With these three prompts I had the initial [localhost](http://localhost) version of the business and service layer**
+
+### Issues and Roadblocks After the Initial Prompt(s) (i.e. Issues I was forced to fix)
+
+Claude did a great job when it came to generating the initial versions of the code that it ran locally, but it fell short when it came to transitioning it over into the hosted portion of the project. This was a really big headache because the AI model was incapable of providing the proper instructions to get the services hosted, so I had to figure out how to do it myself. I used railway to host my database and render to host the API 
+
+  Railway caused the most problems with the deployment. The main issue was connecting to my public instance of railway, and not the local one. Through about two combined hours of railway, I was able to take it upon myself and find the solution to connecting my database to railway. The [render.com](http://render.com) setup for hosting the API was very simple, so I did not need the AI’s help there. 
+
+### Changes After the Inital Implementation
+
+After the initial implementation. I added the functionality for connecting my services and API to the hosted site; this was partially AI assited, though the connection methodology was figured out by me (as stated above). I also ended up creating a script that would test the connection using AI. that file is called ‘test_railway_connection.py’ 
+     More specifically, I had to change the schema to point towards railway and render, as oppsed to local host. 
+
+### AI Effectiveness (i.e. What did it do Well?)
+
+  For this specific project I would rate the AI **3/5 somewhat effective**. The initial code base it provided was very good, however, it offered little to no help in switching that local instance into a hosted instance. The code it did write initially was very functional though, with that having no errors.
 
 #### **Project 3: Frontend**
 
-**Initial Prompt:**
+### Initial Prompt(s)
+
+My usual methodology for using the Claude AI is to segment the process through the use of multiple prompts. I have adopted a similar structure here. My initial prompt was to identify the scope of the project to see whether or not it was feasible and to find possible methods of execution for the project, and the following prompt or prompts is to actually gain the code. 
+
+**Prompt 1:** 
+
+**NOTE:** I attached a PDF version of the instructions to this prompt. It is also important to acknowledge that, like last time, this is within the same chat that all of the projects were created in. 
+
+**‘OK, let's get started on the next project. Attached are the instructions. I want you to tell me how we might go about its implementation as well as its frameworks’** 
+
+In response to Prompt 1, I decided to use react and netlify to complete this edition of the project. 
+
+**Prompt 2:** 
+
+**NOTE:** I attached multiple .css files from my capstone computing project, a web app with a style that I am fond of. However, I wanted the color scheme to be primarily purple instead of primarily garnet. 
+
+**NOTE:** I am refering to a file structure outlined by Claude. It gave a large amount of files which are easily generated through the creation of a react project. When I said “is there a way to get alot of these files you've outlined here?”, I was referring to this large file structure. I is also important to note that this is the very first time I have used react. 
+
+**‘Ok let's get started with the code. we can use react and netlify, but we can do deployment later. give the updated file locations too. Let's build it in chunks because it will be alot. with react, how do I install it? and is there a way to get alot of these files you've outlined here? . I have attached files to aid in the appearance to use as reference. the color scheme has garnet, but I want mine to be purple (#A020F0)’** 
+
+### Issues and Roadblocks After the Initial Prompt(s) (i.e. Issues I was forced to fix)
+
+  Per-usual, Claude was very effective in generating the inital code and giving instructions to do so. The very first version was very visually pleasing, and the instructions were very clear. However, there were several features that were incorrectly implemented that may have been an oversight in the last project. It had to do with how the front-end was interpretting the input of date ranges on the external site. This was the error: 
+
+```jsx
+**Failed: Database error: '<=' not supported between instances of 'str' and 'int'” as an error that was very prominent among the budget, budget rule, and transaction managers**
 ```
-Create a React application with full CRUD operations for a budget tracking 
-system with 5 tables: Users, Categories, Budgets, Budget Rules, and 
-Transactions. Use purple (#A020F0) as the primary color. Include forms for 
-create/update, tables for displaying data, view buttons for single records, 
-delete buttons with confirmation, and filter dropdowns for subset queries.
-```
 
-**Styling Prompt:**
-```
-Adapt the styling from a garnet color scheme to purple (#A020F0). Create a 
-professional design with gradient navigation, card-based layouts, smooth 
-transitions, and responsive design.
-```
+  This error was seen in the budget_manager.py, budget_rule_manager.py, and transaction.py files. It made it better that it was consistent across multiple files, so it was easier to debug. The primary error was that numeric values were being seen as strings, or the other way around. To fix this, I had to add input normalization in the effected files, explicitly type casting the variables so  there were no discrepcancies. As stated before, this was caused by how the front-end was interacting with the back-end, and this took a large amount of development time to complete.
 
-### Changes Made to Generated Code
+  I also had a few other small errors within the deployment phase of this project. They were primarily user-errors on my side. The most notable was forgetting to add “/api” to the URL when connecting my netlify instance to my API instance hosted on Render. 
 
-#### **Database Layer Modifications**
-1. **Foreign Key Fix:** Added `ENGINE=InnoDB` to all CREATE TABLE statements (AI initially used default engine)
-2. **Date Handling:** Modified `_validate_dates()` in `budget_manager.py` to handle both string and date objects
-3. **Port Configuration:** Changed default port from 5000 to 5001 to avoid conflicts
+### Changes After the Inital Implementation
 
-#### **Business Layer Modifications**
-1. **Date Comparison Bug:** Fixed budget manager where date strings were being compared with `<=` operator
-   - Original code: `return end_date >= start_date` (failed when dates were strings)
-   - Fixed code: Convert strings to date objects before comparison
-   
-2. **Unused Variables:** Removed unused `loading` state variables in `BudgetRules.jsx` and `Transactions.jsx`
+  After the intial implementation, I changed the  budget_manager.py, budget_rule_manager.py, and transaction.py files to combat the major error I outlined above. The initial implementation already had the potential for connection to external hosted services, so I did not need to make modifications there; however, I did have to go and make the connections physically myself (specifically connecting netlify to my API instance hosted on Render). 
 
-#### **Service Layer Modifications**
-1. **Environment Variables:** Updated `db_config.py` to use individual env vars instead of single connection string
-2. **CORS Configuration:** Added proper CORS headers for Netlify domain
+### AI Effectiveness (i.e. What did it do Well?)
 
-#### **Frontend Modifications**
-1. **Build Configuration:** Added `CI=false` to npm build script to prevent warnings from breaking production builds
-2. **API URL:** Configured `REACT_APP_API_URL` environment variable for deployment
-3. **File Structure:** Moved `App.jsx` from `components/` to `src/` directory
-
-### AI Effectiveness Analysis
-
-#### **What AI Did Well ✅**
-
-1. **Complete Code Generation**
-   - Generated all 5 CRUD components with proper structure
-   - Created comprehensive REST API endpoints
-   - Built professional business layer with validation
-   - Produced clean, maintainable code
-
-2. **Best Practices**
-   - Proper separation of concerns (n-tier architecture)
-   - Connection pooling for database
-   - Error handling and validation
-   - RESTful API design
-
-3. **Documentation**
-   - Detailed inline comments
-   - Clear function docstrings
-   - README generation
-   - Setup guides
-
-4. **Styling & UX**
-   - Professional, cohesive purple theme
-   - Responsive design
-   - Smooth animations
-   - User-friendly forms
-
-#### **What AI Missed ❌**
-
-1. **Deployment-Specific Configuration**
-   - Didn't account for Railway's non-standard MySQL port
-   - Initial `.env` setup required manual configuration
-   - Netlify build settings needed manual adjustment
-
-2. **Edge Cases**
-   - Date validation bug when mixing string/date types
-   - Unused variable warnings in production builds
-   - CORS configuration for specific domains
-
-3. **Platform Nuances**
-   - Render vs Netlify environment variable differences
-   - Free tier cold start behavior (Render)
-   - Build optimization flags (Netlify)
-
-#### **Errors Resolved Manually 🔧**
-
-1. **Budget Date Comparison Error**
-   - Error: `'<=' not supported between instances of 'str' and 'int'`
-   - Cause: Dates from forms were strings, code expected date objects
-   - Fix: Added type checking and conversion in `_validate_dates()`
-
-2. **Netlify Build Failure**
-   - Error: `Treating warnings as errors because process.env.CI = true`
-   - Cause: ESLint warnings for unused variables
-   - Fix: Added `CI=false` to build script and removed unused variables
-
-3. **API Connection Error**
-   - Error: `Failed to load users: Endpoint not found`
-   - Cause: `REACT_APP_API_URL` missing `/api` suffix
-   - Fix: Updated environment variable to include full path
-
-4. **MySQL Workbench Foreign Keys Not Showing**
-   - Issue: Foreign keys present in database but not visible in GUI
-   - Cause: MySQL Workbench bug with MySQL 9.x
-   - Fix: Verified relationships via SQL query instead of GUI
+  For this specific project I would rate the AI **3.5/5 somewhat effective**. The initial code base it provided was very good, and it gave phenominal instructions on how to install npm and react. It did however create bugs that were consistent across multiple files; it was not able to solve these bugs on its own seemingly because it looked over them, but I was able to fix them. Due to the consistency of the bugs, I did not take too many points off. Everything but those bugs were implemented properly, and it styled the project very well.
 
 #### **Overall Assessment**
 
@@ -684,7 +679,7 @@ transitions, and responsive design.
 - Some platform-specific knowledge gaps
 
 **Conclusion:**  
-AI was highly effective for rapid prototyping and development. The few issues encountered were minor and quickly resolved with targeted prompts or manual fixes. The tool excelled at generating boilerplate code, implementing patterns, and providing deployment guidance.
+AI was highly effective for rapid prototyping and development. Most of the issues encountered were minor and quickly resolved with targeted prompts or manual fixes. The tool excelled at generating boilerplate code, implementing patterns, and providing deployment guidance.
 
 ---
 
@@ -794,18 +789,11 @@ Use this checklist to verify successful deployment:
 - [ ] Data persists across sessions
 - [ ] Changes reflect immediately in UI
 
-✅ **If all items are checked, deployment is successful!**
+**If all items are checked, deployment is successful!**
 
 ---
 
 ## Project Statistics
-
-### Development Timeline
-- **Project 1 (Data Layer):** 6 hours
-- **Project 2 (Business/Service):** 8 hours
-- **Project 3 (Frontend):** 10 hours
-- **Project 4 (Deployment/Docs):** 4 hours
-- **Total:** ~28 hours
 
 ### Code Metrics
 - **Total Files:** 25
@@ -831,7 +819,7 @@ Use this checklist to verify successful deployment:
 **Semester:** Spring 2026  
 
 **Technologies:** React, Flask, Python, MySQL, Railway, Render, Netlify  
-**AI Assistance:** Claude (Anthropic) for code generation and debugging  
+**AI Assistance:** Claude (Anthropic) for code generation
 
 ---
 
@@ -843,4 +831,4 @@ Academic project for CSCE 548. All rights reserved.
 
 **Last Updated:** March 13, 2026  
 **Version:** 1.0.0  
-**Status:** ✅ Complete and Deployed
+**Status:** Complete and Deployed
