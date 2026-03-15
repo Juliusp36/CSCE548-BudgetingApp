@@ -48,40 +48,15 @@ Budget Tracker is a complete full-stack web application for personal budget mana
 ### System Diagram
 
 ```
-┌─────────────────────────────────────┐
-│   React Frontend (Netlify)          │
-│   - User Interface                   │
-│   - CRUD Forms                       │
-│   - Data Display                     │
-└─────────────┬───────────────────────┘
-              │ HTTPS REST API
-              ↓
-┌─────────────────────────────────────┐
-│   Flask REST API (Render)           │
-│   - Service Layer Endpoints          │
-│   - CORS Configuration               │
-└─────────────┬───────────────────────┘
-              │
-              ↓
-┌─────────────────────────────────────┐
-│   Business Layer                     │
-│   - Validation Logic                 │
-│   - Business Rules                   │
-└─────────────┬───────────────────────┘
-              │
-              ↓
-┌─────────────────────────────────────┐
-│   Data Access Layer                  │
-│   - CRUD Operations                  │
-│   - Connection Pooling               │
-└─────────────┬───────────────────────┘
-              │
-              ↓
-┌─────────────────────────────────────┐
-│   MySQL Database (Railway)          │
-│   - 5 Tables, 5 Foreign Keys         │
-│   - 143 Rows Test Data               │
-└─────────────────────────────────────┘
+[React Frontend (Netlify)]
+    ↓
+[Flask REST API (Render)]
+    ↓
+[Business Layer]
+    ↓
+[Data Access Layer]
+    ↓
+[MySQL Database (Railway)]
 ```
 
 ### Technology Stack
