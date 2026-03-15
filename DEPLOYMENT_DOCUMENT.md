@@ -179,13 +179,13 @@ Ensure your repository has these files in `backend/`:
 
 ```
 backend/
-├── models/           # Data Access Layer
-├── business/         # Business Layer
-├── app.py           # Flask service
-├── db_config.py     # Database connection
-├── requirements_service.txt
-├── Procfile
-└── .env (local only - not in git)
+── models/           # Data Access Layer
+── business/         # Business Layer
+── app.py           # Flask service
+── db_config.py     # Database connection
+── requirements_service.txt
+── Procfile
+── .env (local only - not in git)
 ```
 
 **Verify `requirements_service.txt`:**
@@ -276,22 +276,22 @@ Ensure your repository has these files in `frontend/`:
 
 ```
 frontend/
-├── public/
-│   └── index.html
-├── src/
-│   ├── components/
-│   │   ├── Users.jsx
-│   │   ├── Categories.jsx
-│   │   ├── Budgets.jsx
-│   │   ├── BudgetRules.jsx
-│   │   └── Transactions.jsx
-│   ├── services/
-│   │   └── api.js
-│   ├── App.jsx
-│   ├── App.css
-│   ├── index.js
-│   └── index.css
-└── package.json
+── public/
+│   ── index.html
+── src/
+│   ── components/
+│   │   ── Users.jsx
+│   │   ── Categories.jsx
+│   │   ── Budgets.jsx
+│   │   ── BudgetRules.jsx
+│   │   ── Transactions.jsx
+│   ── services/
+│   │   ── api.js
+│   ── App.jsx
+│   ── App.css
+│   ── index.js
+│   ── index.css
+── package.json
 ```
 
 **Verify `package.json` has build script:**
