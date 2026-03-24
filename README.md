@@ -1,4 +1,285 @@
 # Budget Tracker Application
+## Quick Start Guide - Local Development
+
+### Requirements
+* Python 3.8 or higher
+* Node.js 16+ and npm
+* MySQL 8.0 or higher
+* Git
+
+### Step 1: Clone the Repository
+
+```bash
+git clone https://github.com/yourusername/CSCE548-BudgetingApp.git
+cd CSCE548-BudgetingApp
+```
+
+### Step 2: Verify Python Installation
+
+If you don't have Python installed, download it from [python.org/downloads](https://www.python.org/downloads/). During installation, make sure to check "Add Python to PATH".
+
+Verify installation:
+
+```bash
+python --version
+# or
+python3 --version
+```
+
+### Step 3: Install and Setup MySQL
+
+#### 3.1 Install MySQL
+
+**macOS (using Homebrew):**
+```bash
+brew install mysql
+brew services start mysql
+```
+
+**Windows:**
+- Download from [dev.mysql.com/downloads/mysql](https://dev.mysql.com/downloads/mysql/)
+- Follow installer instructions
+- Start MySQL from Services or MySQL Workbench
+
+**Linux (Ubuntu/Debian):**
+```bash
+sudo apt update
+sudo apt install mysql-server
+sudo systemctl start mysql
+```
+
+#### 3.2 Secure MySQL Installation
+
+```bash
+sudo mysql_secure_installation
+```
+
+Follow prompts:
+- Set root password (remember this!)
+- Remove anonymous users: Yes
+- Disallow root login remotely: Yes
+- Remove test database: Yes
+- Reload privilege tables: Yes
+
+#### 3.3 Create Database and Load Data
+
+```bash
+# Connect to MySQL
+mysql -u root -p
+# Enter your root password
+
+# Create database and user
+CREATE DATABASE budget_tracker;
+CREATE USER 'budget_user'@'localhost' IDENTIFIED BY 'your_password';
+GRANT ALL PRIVILEGES ON budget_tracker.* TO 'budget_user'@'localhost';
+FLUSH PRIVILEGES;
+EXIT;
+```
+
+#### 3.4 Load Schema and Test Data
+
+```bash
+cd backend
+
+# Load schema
+mysql -u budget_user -p budget_tracker < schema.sql
+
+# Load test data
+mysql -u budget_user -p budget_tracker < test_data.sql
+```
+
+#### 3.5 Verify Database
+
+```bash
+mysql -u budget_user -p budget_tracker
+
+# Once connected, verify tables
+SHOW TABLES;
+# Should show: users, categories, budgets, budget_rules, transactions
+
+# Check data
+SELECT COUNT(*) FROM users;
+SELECT COUNT(*) FROM transactions;
+# Should show 143 total rows
+
+EXIT;
+```
+
+---
+
+### Step 4: Backend Setup
+
+#### 4.1 Set Up Virtual Environment
+
+```bash
+# Make sure you're in backend/ directory
+cd backend
+
+python -m venv venv
+```
+
+Activate it:
+* **macOS/Linux:**
+  ```bash
+  source venv/bin/activate
+  ```
+
+* **Windows:**
+  ```bash
+  venv\Scripts\activate
+  ```
+
+#### 4.2 Install Dependencies
+
+```bash
+pip install -r requirements.txt
+```
+
+#### 4.3 Configure Database Connection
+
+Create a `.env` file in the `backend/` directory:
+
+```bash
+# .env
+DB_HOST=localhost
+DB_PORT=3306
+DB_USER=budget_user
+DB_PASSWORD=your_password
+DB_NAME=budget_tracker
+```
+
+Replace `your_password` with the password you set in Step 3.3.
+
+#### 4.4 Start Backend Server
+
+```bash
+python app.py
+```
+
+You should see:
+```
+* Running on http://127.0.0.1:5001
+```
+
+Backend is now running at: `http://localhost:5001`
+
+---
+
+### Step 5: Frontend Setup (New Terminal)
+
+**Open a NEW terminal window** (keep backend running in the first one)
+
+#### 5.1 Navigate to Frontend Directory
+
+```bash
+cd CSCE548-BudgetingApp/frontend
+```
+
+#### 5.2 Install Dependencies
+
+```bash
+npm install
+```
+
+#### 5.3 Start Frontend Server
+
+```bash
+npm start
+```
+
+Frontend should automatically open at: `http://localhost:3000`
+
+---
+
+### Step 6: Verify Everything Works
+
+- ✅ Backend running at `http://localhost:5001`
+- ✅ Frontend running at `http://localhost:3000`
+- ✅ Navigate through all 5 sections (Users, Categories, Budgets, Budget Rules, Transactions)
+- ✅ Try creating a record to verify database connection
+
+**Test the backend API directly:**
+```bash
+# In a third terminal
+curl http://localhost:5001/
+# Should return JSON with service info
+
+curl http://localhost:5001/api/users
+# Should return array of users
+```
+
+---
+
+### Stopping the Servers
+
+**Backend:**
+- Press `Ctrl+C` in backend terminal
+- Deactivate virtual environment: `deactivate`
+
+**Frontend:**
+- Press `Ctrl+C` in frontend terminal
+
+**MySQL:**
+- Stays running in background (good for development)
+- To stop: `brew services stop mysql` (macOS) or stop via Services (Windows)
+
+---
+
+### Troubleshooting
+
+#### **Port already in use:**
+```bash
+# Kill process on port 5001 (backend)
+lsof -ti:5001 | xargs kill -9
+
+# Kill process on port 3000 (frontend)
+lsof -ti:3000 | xargs kill -9
+```
+
+#### **MySQL connection errors:**
+
+**"Access denied for user":**
+- Verify password in `.env` matches MySQL user password
+- Try connecting manually: `mysql -u budget_user -p budget_tracker`
+
+**"Can't connect to MySQL server":**
+- Check MySQL is running: `brew services list` (macOS) or check Services (Windows)
+- Start MySQL: `brew services start mysql` (macOS)
+
+**"Database doesn't exist":**
+- Recreate database: `mysql -u root -p -e "CREATE DATABASE budget_tracker;"`
+- Reload schema: `mysql -u budget_user -p budget_tracker < schema.sql`
+
+#### **Python module not found errors:**
+- Ensure virtual environment is activated: `(venv)` should appear in prompt
+- Reinstall dependencies: `pip install -r requirements_service.txt`
+
+#### **Frontend shows "Failed to load users":**
+- Verify backend is running on port 5001
+- Check browser console (F12) for specific errors
+- Verify `.env` database credentials are correct
+
+---
+
+### MySQL Management Tools (Optional)
+
+**MySQL Workbench** (GUI for database management):
+- Download: [dev.mysql.com/downloads/workbench](https://dev.mysql.com/downloads/workbench/)
+- Connection: `localhost:3306`, user: `budget_user`
+
+**Command Line Tools:**
+```bash
+# View all databases
+mysql -u budget_user -p -e "SHOW DATABASES;"
+
+# Backup database
+mysqldump -u budget_user -p budget_tracker > backup.sql
+
+# Restore database
+mysql -u budget_user -p budget_tracker < backup.sql
+```
+
+---
 
 A comprehensive budget tracking system with a MySQL database backend and Python data access layer.
 
